@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const routes = require('./routes/index');
+const errorHandler = require('./middlewares/errors');
 
 const app = express();
 
@@ -18,8 +19,7 @@ app.use(flash());
 
 app.use('/', routes);
 
-app.use((req, res, next) => {
-  res.status(404).render('404');
-});
+app.use(errorHandler.notFound);
+app.use(errorHandler.catchErrors);
 
 module.exports = app;
