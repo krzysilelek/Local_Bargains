@@ -4,6 +4,12 @@ exports.notFound = (req, res, next) => {
   next(err);
 };
 
+exports.catchAsync = (fn) => {
+  return (req, res, next) => {
+    fn(req, res, next).catch(err => next(err));
+  }
+};
+
 exports.catchErrors = (err, req, res, next) => {
   console.log(err);
   res.status(err.status || 500);
@@ -11,4 +17,5 @@ exports.catchErrors = (err, req, res, next) => {
     status: err.status,
     message: err.message
   });
-}
+};
+

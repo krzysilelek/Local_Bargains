@@ -8,14 +8,11 @@ module.exports.db = async(req, res, next) => {
     user: 'test',
     password: 'test'
   });
-  try{
-    await client.connect();
-    const query = await client.query('SELECT NOW()');
-    req.dbquery = query.rows[0];
-    await client.end();
-    next();
-  }catch(err){
-    next(err);
-  }
+  
+  await client.connect();
+  const query = await client.query('SELECT NOW()');
+  req.dbquery = query.rows[0];
+  await client.end();
+  next();
 }
 
