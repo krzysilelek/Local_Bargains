@@ -1,15 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const PagesController = require('../controllers/PagesController');
-const DatabaseController = require('../controllers/DatabaseController');
-const errorHandler = require('../middlewares/errors');
+const PagesController = require("../controllers/PagesController");
+const DatabaseController = require("../controllers/DatabaseController");
+const errorHandler = require("../middlewares/errors");
 
-router.get('/', PagesController.home);
+router.get("/", PagesController.home);
 router.post(
-  '/db',
+  "/db",
   errorHandler.catchAsync(DatabaseController.db),
-  PagesController.db
+  PagesController.db,
 );
 
 module.exports = router;
-
