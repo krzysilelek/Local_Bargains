@@ -4,16 +4,21 @@ version: '3.1'
 services:
 
   db:
+    container_name: postgresql
     image: postgres
     restart: always
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME} 
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./.data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
     ports:
       - 5432:${DB_PORT}
 
   adminer:
+    container_name: admirer
     image: adminer
     restart: always
     ports:
