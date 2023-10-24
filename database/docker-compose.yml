@@ -13,13 +13,6 @@ services:
       - POSTGRES_DB=${DB_NAME}
     volumes:
       - ./.data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./init-scripts/:/docker-entrypoint-initdb.d/
     ports:
       - 5432:${DB_PORT}
-
-  adminer:
-    container_name: admirer
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
