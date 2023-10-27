@@ -5,6 +5,5 @@ CREATE TABLE Users (
 );
 INSERT INTO Users(username, email)
 VALUES
-  ('Goodman', 'goodman@kindacode.com'),
-  ('Badman', 'badman@kindacode.com'),
-  ('Invisible Man', 'invisibleman@kindacode.com');
+  ('walidator03', 'walidator03@gmail.com'),
+  ('userek', 'user@user.com');
