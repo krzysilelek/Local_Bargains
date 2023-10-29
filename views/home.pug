@@ -6,8 +6,7 @@ html(lang="pl")
     link(rel="stylesheet", href="./styles/styles.css")
     title Lokalne Okazje
   body
-    h1.text-6xl Welcome page.
+    include nav
     form.mt-12(action='/db', method='POST')
       input(type='submit', value='DB')
-    button(class="py-2 px-4 font-semibold rounded-lg shadow-md text-white bg-green-500 hover:bg-green-700") Hover me!
-
+    include footer

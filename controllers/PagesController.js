@@ -3,8 +3,11 @@ exports.home = (req, res) => {
 };
 
 exports.db = (req, res) => {
-  res.render('db', {
-    query: req.dbquery.now
+  res.send(req.dbquery);
+
+  /*res.render('db', {
+    query: JSON.stringify(req.dbquery)
   });
+  */
 };
 

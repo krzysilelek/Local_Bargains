@@ -1,18 +1,22 @@
-const { Client } = require('pg')
+const sequelize = require('../database/sequelize.js');
+const Users = require('../models/users.js');
 
-module.exports.db = async (req, res, next) => {
-  const client = new Client({
-    host: 'localhost',
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
+exports.test = async (req, res, next) => {
+  Users.findAll().then((users) => {
+    req.dbquery = users;
+    next();
   });
+};
 
-  await client.connect();
-  const query = await client.query('SELECT NOW()');
-  req.dbquery = query.rows[0];
-  await client.end();
+exports.getPassword = async (req, res, next) => {
+  const user = await Users.findOne({
+    where: {
+      email: req.body.email
+    }
+  });
+  if (user === null) {
+    throw new Error("User not exist!");
+  }
+  req.user = user;
   next();
 }
-
