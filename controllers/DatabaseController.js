@@ -2,7 +2,6 @@ const sequelize = require('../database/sequelize.js');
 const Users = require('../models/users.js');
 
 exports.test = async (req, res, next) => {
-  console.log("In DB");
   Users.findAll().then((users) => {
     req.dbquery = users;
     next();
@@ -16,7 +15,7 @@ exports.getPassword = async (req, res, next) => {
     }
   });
   if (user === null) {
-    throw new Error("User not exist!");
+    return res.status(400).send("User not exist!");
   }
   req.user = user;
   next();

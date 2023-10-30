@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt');
 const { createAccessToken, createRefreshToken, verifyAccessToken, verifyRefreshToken } = require('../utils/jwt.js');
 
+const ACCESS_TOKEN_AGE = '10m';
+const REFRESH_TOKEN_AGE = '1d';
+
 exports.login = async (req, res) => {
   const password = req.body.password;
   const user = req.user;
@@ -10,8 +13,8 @@ exports.login = async (req, res) => {
     throw new Error("Authetication failed!");
   }
 
-  const accessToken = createAccessToken(user.id, '10m');
-  const refreshToken = createRefreshToken(user.id, '1d');
+  const accessToken = createAccessToken(user.id, ACCESS_TOKEN_AGE);
+  const refreshToken = createRefreshToken(user.id, REFRESH_TOKEN_AGE);
 
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
@@ -32,13 +35,12 @@ exports.authenticate = async (req, res, next) => {
 
   if (accessToken === null) return res.sendStatus(401);
 
-  verifyAccessToken(accessToken)
-    .then(user => {
-      req.user = user;
-    }).catch(() => {
-      return res.sendStatus(403);
-    });
-
+  try {
+    const user = await verifyAccessToken(accessToken);
+    req.user = user;
+  } catch (err) {
+    return res.sendStatus(403);
+  }
   next();
 };
 
@@ -47,16 +49,15 @@ exports.refresh = async (req, res) => {
 
   if (refreshToken === null) return res.status(401);
 
-  verifyRefreshToken(refreshToken)
-    .then(user => {
-      const accessToken = createAccessToken(user.payload, '5s');
-      res.cookie('accessToken', accessToken, {
-        httpOnly: true,
-        secure: true
-      });
-      res.send({ accessToken, refreshToken });
-    })
-    .catch(() => {
-      return res.sendStatus(403);
+  try {
+    const user = await verifyRefreshToken(refreshToken);
+    const accessToken = createAccessToken(user.payload, ACCESS_TOKEN_AGE);
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: true
     });
+    res.send({ accessToken });
+  } catch (err) {
+    return res.sendStatus(403);
+  }
 };
