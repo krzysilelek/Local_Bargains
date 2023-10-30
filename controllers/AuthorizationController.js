@@ -1,49 +1,62 @@
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { createAccessToken, createRefreshToken, verifyAccessToken, verifyRefreshToken } = require('../utils/jwt.js');
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
   const password = req.body.password;
   const user = req.user;
   const validPassword = await bcrypt.compare(password, user.password);
 
-  if (validPassword === false) {
+  if (!validPassword) {
     throw new Error("Authetication failed!");
   }
 
-  const accessToken = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, { expiresIn: '10m' });
-  const refreshToken = jwt.sign({ id: user.id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+  const accessToken = createAccessToken(user.id, '10m');
+  const refreshToken = createRefreshToken(user.id, '1d');
 
-  res.cookie('JWT', accessToken, {
-    maxAge: 86400000,
+  res.cookie('accessToken', accessToken, {
     httpOnly: true,
     secure: true
   });
+
+  res.cookie('refreshToken', refreshToken, {
+    maxAge: 3600000 * 24 * 30,
+    httpOnly: true,
+    secure: true
+  });
+
   res.send({ accessToken, refreshToken });
 };
 
 exports.authenticate = async (req, res, next) => {
-  //const token = req.header('authorization')?.split(' ')[1];
-  const token = req.cookies.JWT ?? null;
+  const { accessToken } = req.cookies ?? null;
 
-  if (token === null) return res.sendStatus(401);
+  if (accessToken === null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next()
-  });
+  verifyAccessToken(accessToken)
+    .then(user => {
+      req.user = user;
+    }).catch(() => {
+      return res.sendStatus(403);
+    });
+
+  next();
 };
 
-exports.refresh = async (req, res, next) => {
-  const refreshToken = req.body.token;
+exports.refresh = async (req, res) => {
+  const { refreshToken } = req.cookies ?? null;
 
-  if (!refreshToken) {
-    return res.status(401);
-  }
+  if (refreshToken === null) return res.status(401);
 
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    const accessToken = jwt.sing({ id: user.id }, process.env.TOKEN_SECRET, { expiresIn: '1d' });
-    res.send(accessToken);
-  })
+  verifyRefreshToken(refreshToken)
+    .then(user => {
+      const accessToken = createAccessToken(user.payload, '5s');
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: true
+      });
+      res.send({ accessToken, refreshToken });
+    })
+    .catch(() => {
+      return res.sendStatus(403);
+    });
 };

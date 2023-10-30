@@ -9,7 +9,7 @@ const errorHandler = require("../middlewares/errors");
 router.get("/", PagesController.home);
 router.get(
   "/api/users",
-  AuthorizationController.authenticate,
+  errorHandler.catchAsync(AuthorizationController.authenticate),
   errorHandler.catchAsync(DatabaseController.test),
   PagesController.db,
 );
@@ -18,6 +18,11 @@ router.post(
   "/api/auth/login",
   errorHandler.catchAsync(DatabaseController.getPassword),
   errorHandler.catchAsync(AuthorizationController.login)
+);
+
+router.post(
+  "/api/auth/refresh",
+  errorHandler.catchAsync(AuthorizationController.refresh)
 );
 
 module.exports = router;
