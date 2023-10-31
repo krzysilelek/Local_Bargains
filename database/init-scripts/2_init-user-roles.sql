@@ -1,7 +1,7 @@
 CREATE TABLE User_Roles (
     user_id INT,
-    role_id INT,
-    PRIMARY KEY(user_id, role_id),
+    role_id INT NOT NULL,
+    PRIMARY KEY(user_id),
     CONSTRAINT fk_user
       FOREIGN KEY(user_id) 
 	      REFERENCES Users(user_id),

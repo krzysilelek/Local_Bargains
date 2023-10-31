@@ -1,5 +1,6 @@
 const sequelize = require('../database/sequelize.js');
 const Users = require('../models/users.js');
+const UserRole = require('../models/user_roles.js');
 
 exports.test = async (req, res, next) => {
   Users.findAll().then((users) => {
@@ -14,10 +15,19 @@ exports.getPassword = async (req, res, next) => {
       email: req.body.email
     }
   });
-  if (user === null) {
-    return res.status(400).send("User not exist!");
-  }
+  if (user === null) return res.status(400).send("User not exist!");
   req.user = user;
+  next();
+}
+
+exports.checkRole = async (req, res, next) => {
+  const role = await UserRole.findOne({
+    where: {
+      user_id: req.user.id
+    }
+  });
+  if (role === null) return res.status(400).send("User is ruleless!");
+  req.user_rol = role;
   next();
 }
 

@@ -494,6 +494,9 @@ video {
 .mt-12 {
   margin-top: 3rem;
 } 
+.flex {
+  display: flex;
+} 
 .rounded-lg {
   border-radius: 0.5rem;
 } 

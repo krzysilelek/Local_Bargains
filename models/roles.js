@@ -1,21 +1,14 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../database/sequelize.js');
 
-module.exports = sequelize.define('users', {
+module.exports = sequelize.define('roles', {
   id: {
-    field: 'user_id',
+    field: 'role_id',
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true
   },
-  name: {
-    field: 'username',
+  role_name: {
     type: Sequelize.STRING(20)
-  },
-  password: {
-    type: Sequelize.STRING
-  },
-  email: {
-    type: Sequelize.STRING(50)
   }
 });
