@@ -7,7 +7,7 @@ module.exports = sequelize.define('user_roles', {
     primaryKey: true,
     references: {
       model: 'users',
-      key: 'id',
+      key: 'user_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
     }
   },
@@ -16,7 +16,7 @@ module.exports = sequelize.define('user_roles', {
     primaryKey: true,
     references: {
       model: 'roles',
-      key: 'id',
+      key: 'role_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
     }
   }

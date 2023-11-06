@@ -8,8 +8,7 @@ module.exports = sequelize.define('users', {
     autoIncrement: true,
     primaryKey: true
   },
-  name: {
-    field: 'username',
+  username: {
     type: Sequelize.STRING(20)
   },
   password: {
@@ -17,5 +16,8 @@ module.exports = sequelize.define('users', {
   },
   email: {
     type: Sequelize.STRING(50)
+  },
+  avatar: {
+    type: Sequelize.BLOB
   }
 });
