@@ -3,7 +3,7 @@ const sequelize = require('../database/sequelize.js');
 
 module.exports = sequelize.define('user_roles', {
   user_id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.UUID,
     primaryKey: true,
     references: {
       model: 'users',
@@ -12,8 +12,7 @@ module.exports = sequelize.define('user_roles', {
     }
   },
   role_id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
+    type: Sequelize.UUID,
     references: {
       model: 'roles',
       key: 'role_id',

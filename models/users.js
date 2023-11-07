@@ -4,8 +4,8 @@ const sequelize = require('../database/sequelize.js');
 module.exports = sequelize.define('users', {
   id: {
     field: 'user_id',
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
   username: {

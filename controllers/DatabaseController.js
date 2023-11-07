@@ -26,7 +26,7 @@ exports.checkRole = async (req, res, next) => {
       user_id: req.user.id
     }
   });
-  if (role === null) return res.status(400).send("User is ruleless!");
+  if (role === null) return res.status(400).send("User is roleless!");
   req.user_rol = role;
   next();
 }

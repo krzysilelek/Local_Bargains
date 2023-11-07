@@ -4,8 +4,8 @@ const sequelize = require('../database/sequelize.js');
 module.exports = sequelize.define('roles', {
   id: {
     field: 'role_id',
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
   role_name: {

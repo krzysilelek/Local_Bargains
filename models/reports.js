@@ -4,12 +4,12 @@ const sequelize = require('../database/sequelize.js');
 module.exports = sequelize.define('reports', {
   id: {
     field: 'report_id',
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
   bargain_id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.UUID,
     references: {
       model: 'bargains',
       key: 'bargain_id',

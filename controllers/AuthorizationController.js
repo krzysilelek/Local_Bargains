@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
   });
 
   res.cookie('refreshToken', refreshToken, {
-    maxAge: 3600000 * 24 * 30,
+    maxAge: 3600000 * 24,
     httpOnly: true,
     secure: true
   });
