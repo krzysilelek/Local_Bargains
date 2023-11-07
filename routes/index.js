@@ -3,7 +3,7 @@ const router = express.Router();
 const PagesController = require("../controllers/PagesController");
 const DatabaseController = require("../controllers/DatabaseController");
 const AuthorizationController = require("../controllers/AuthorizationController");
-const errorHandler = require("../middlewares/errors");
+const errorHandler = require("../handlers/errors");
 
 
 router.get("/", PagesController.home);

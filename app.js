@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const routes = require("./routes/index");
-const errorHandler = require("./middlewares/errors");
+const errorHandler = require("./handlers/errors");
 
 const app = express();
 
