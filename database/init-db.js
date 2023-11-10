@@ -7,24 +7,21 @@ require('../models/comments.js');
 require('../models/reports.js');
 
 async function findUserUUID(_username) {
-  const user = await Users.findOne({
+  const { id } = await Users.findOne({
     where: {
       username: _username
     }
   });
-
-  console.log(user.id);
-  return user.id;
+  return id;
 }
 
 async function findRoleUUID(roleName) {
-  const role = await Roles.findOne({
+  const { id } = await Roles.findOne({
     where: {
       role_name: roleName
     }
   });
-  console.log(role.id);
-  return role.id;
+  return id;
 }
 
 async function build() {

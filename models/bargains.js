@@ -10,6 +10,7 @@ module.exports = sequelize.define('bargains', {
   },
   user_id: {
     type: Sequelize.UUID,
+    allowNull: false,
     references: {
       model: 'users',
       key: 'user_id',
@@ -18,7 +19,8 @@ module.exports = sequelize.define('bargains', {
   },
   title: {
     field: 'bargain_title',
-    type: Sequelize.STRING(50)
+    type: Sequelize.STRING(50),
+    allowNull: false
   },
   description: {
     type: Sequelize.TEXT
@@ -28,12 +30,15 @@ module.exports = sequelize.define('bargains', {
   },
   tag: {
     type: Sequelize.ENUM,
-    values: ['one', 'two']
+    values: ['one', 'two'],
+    allowNull: false
   },
   latitude: {
-    type: Sequelize.FLOAT
+    type: Sequelize.FLOAT,
+    allowNull: false
   },
   longitude: {
-    type: Sequelize.FLOAT
+    type: Sequelize.FLOAT,
+    allowNull: false
   }
 });

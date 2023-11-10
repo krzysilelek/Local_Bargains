@@ -10,6 +10,7 @@ module.exports = sequelize.define('comments', {
   },
   bargain_id: {
     type: Sequelize.UUID,
+    allowNull: false,
     references: {
       model: 'bargains',
       key: 'bargain_id',
@@ -17,9 +18,11 @@ module.exports = sequelize.define('comments', {
     }
   },
   description: {
-    type: Sequelize.TEXT
+    type: Sequelize.TEXT,
+    allowNull: false
   },
   date: {
-    type: Sequelize.DATE
+    type: Sequelize.DATE,
+    allowNull: false
   }
 });
