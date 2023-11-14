@@ -5,10 +5,10 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "init-db": "node server/database/init-db.js",
-    "start-db": "cd server/database/; docker compose --env-file ../.env up -d",
-    "stop-db": "cd server/database/; docker compose --env-file ../.env down",
-    "run-server": "nodemon server/server.js"
+    "init-db": "node database/init-db.js",
+    "start-db": "cd database/; docker compose --env-file ../.env up -d",
+    "stop-db": "cd database/; docker compose --env-file ../.env down",
+    "run-server": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
