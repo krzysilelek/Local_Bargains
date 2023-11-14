@@ -9,7 +9,7 @@ exports.login = async (req, res) => {
   const user = req.user;
   const validPassword = await bcrypt.compare(password, user.password);
 
-  if (!validPassword) return res.sendStatus(402);
+  if (!validPassword) return res.sendStatus(401);
 
   const accessToken = createAccessToken(user.id, ACCESS_TOKEN_AGE);
   const refreshToken = createRefreshToken(user.id, REFRESH_TOKEN_AGE);

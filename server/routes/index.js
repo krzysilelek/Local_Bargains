@@ -1,17 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const PagesController = require("../controllers/PagesController");
 const DatabaseController = require("../controllers/DatabaseController");
 const AuthorizationController = require("../controllers/AuthorizationController");
 const errorHandler = require("../handlers/errors");
 
 
-router.get("/", PagesController.home);
 router.get(
   "/api/users",
   errorHandler.catchAsync(AuthorizationController.authenticate),
-  errorHandler.catchAsync(DatabaseController.test),
-  PagesController.db,
+  errorHandler.catchAsync(DatabaseController.test)
+);
+
+router.get(
+  "/api/bargains/:pageSize/:page",
+  errorHandler.catchAsync(DatabaseController.getBargains)
 );
 
 router.post(

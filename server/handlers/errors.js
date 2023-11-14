@@ -1,5 +1,5 @@
 exports.notFound = (req, res, next) => {
-  const err = new Error("404 page not found!");
+  const err = new Error("404 endpoint not found!");
   err.status = 404;
   next(err);
 };
@@ -12,9 +12,5 @@ exports.catchAsync = (fn) => {
 
 exports.catchErrors = (err, req, res, next) => {
   console.log(err);
-  res.status(err.status || 500);
-  res.render("error", {
-    status: err.status,
-    message: err.message,
-  });
+  res.sendStatus(err.status || 500);
 };

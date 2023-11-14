@@ -1,13 +1,38 @@
 const sequelize = require('../database/sequelize.js');
 const Users = require('../models/users.js');
 const UserRole = require('../models/user_roles.js');
+const Bargains = require('../models/bargains.js');
+
+const paginate = (query, { page, pageSize }) => {
+  const offset = page * pageSize;
+  const limit = pageSize;
+
+  return {
+    query,
+    offset,
+    limit,
+  };
+};
 
 exports.test = async (req, res, next) => {
   Users.findAll().then((users) => {
-    req.dbquery = users;
-    next();
+    res.send(users);
   });
 };
+
+exports.getBargains = async (req, res, next) => {
+  const bargains = await Bargains.findAll(
+    paginate(
+      {
+        where: {},
+      },
+      { page: req.params.page, pageSize: req.params.pageSize }
+    )
+  );
+
+  res.send(bargains)
+}
+
 
 exports.getPassword = async (req, res, next) => {
   const user = await Users.findOne({
@@ -15,7 +40,7 @@ exports.getPassword = async (req, res, next) => {
       email: req.body.email
     }
   });
-  if (user === null) return res.status(400).send("User not exist!");
+  if (user === null) return res.sendStatus(418);
   req.user = user;
   next();
 }
