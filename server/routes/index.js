@@ -27,4 +27,9 @@ router.post(
   errorHandler.catchAsync(AuthorizationController.refresh)
 );
 
+router.post(
+  "/api/auth/register",
+  errorHandler.catchAsync(DatabaseController.addNewUser)
+);
+
 module.exports = router;

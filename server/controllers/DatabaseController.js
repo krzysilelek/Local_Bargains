@@ -2,6 +2,7 @@ const sequelize = require('../database/sequelize.js');
 const Users = require('../models/users.js');
 const UserRole = require('../models/user_roles.js');
 const Bargains = require('../models/bargains.js');
+const bcrypt = require('bcrypt');
 
 const paginate = (query, { page, pageSize }) => {
   const offset = page * pageSize;
@@ -56,3 +57,11 @@ exports.checkRole = async (req, res, next) => {
   next();
 }
 
+exports.addNewUser = async (req, res, next) => {
+  const username = req.body.username;
+  const email = req.body.email;
+  let password = req.body.password;
+  password = await bcrypt.hash(password, 10);
+  await Users.create({ username: username, password: password, email: email });
+  res.send("User has been created!");
+}

@@ -16,16 +16,16 @@ exports.login = async (req, res) => {
 
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
-    secure: true
+    secure: false
   });
 
   res.cookie('refreshToken', refreshToken, {
     maxAge: 3600000 * 24,
     httpOnly: true,
-    secure: true
+    secure: false
   });
-
-  res.send({ accessToken, refreshToken });
+  res.send("OK!");
+  //res.send({ accessToken, refreshToken });
 };
 
 exports.authenticate = async (req, res, next) => {
