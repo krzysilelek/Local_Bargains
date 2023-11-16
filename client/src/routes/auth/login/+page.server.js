@@ -1,4 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
+import * as set_cookie_parser from 'set-cookie-parser';
 
 export const actions = {
   form: async ({ request, url, cookies }) => {
@@ -34,8 +35,11 @@ export const actions = {
         message: 'Bad password!'
       });
     }
-    console.log(response);
-    console.log(cookies.getAll());
+    const { headers } = response;
+    for (const str of set_cookie_parser.splitCookiesString(headers.get('set-cookie'))) {
+      const { name, value, ...options } = set_cookie_parser.parseString(str);
+      cookies.set(name, value, { ...options });
+    }
     throw redirect(303, url.searchParams.get('redirectTo') || '/');
   }
 }

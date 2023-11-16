@@ -1,6 +1,3 @@
-<script>
-</script>
-
 <svelte:head>
   <title>Local Bargains!</title>
 </svelte:head>
