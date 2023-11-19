@@ -62,6 +62,13 @@ exports.addNewUser = async (req, res, next) => {
   const email = req.body.email;
   let password = req.body.password;
   password = await bcrypt.hash(password, 10);
-  await Users.create({ username: username, password: password, email: email });
+  try {
+    await Users.create({ username: username, password: password, email: email });
+  } catch (err) {
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      res.status(409).send("Email is already used!");
+    }
+    next(err);
+  }
   res.send("User has been created!");
 }

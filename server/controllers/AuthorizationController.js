@@ -24,8 +24,7 @@ exports.login = async (req, res) => {
     httpOnly: true,
     secure: false
   });
-  res.send("OK!");
-  //res.send({ accessToken, refreshToken });
+  res.send({ accessToken, refreshToken });
 };
 
 exports.authenticate = async (req, res, next) => {

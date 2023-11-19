@@ -2,7 +2,7 @@
   export let data;
 </script>
 
-<h1>Welcome to Local Bargains</h1>
+<a href="/"><h1>Welcome to Local Bargains</h1></a>
 {#if data.accessToken}
   {data.accessToken}
   <a href="/auth/logout"> Log out </a>
