@@ -9,7 +9,7 @@ const paginate = (query, { page, pageSize }) => {
   const limit = pageSize;
 
   return {
-    query,
+    ...query,
     offset,
     limit,
   };
@@ -32,6 +32,16 @@ exports.getBargains = async (req, res, next) => {
   );
 
   res.send(bargains)
+}
+
+exports.getBargain = async (req, res) => {
+  const bargain = await Bargains.findOne({
+    where: {
+      id: req.params.id
+    }
+  });
+  if (bargain === null) return res.status(400).send("There is no bargain with that ID!");
+  res.send(bargain);
 }
 
 

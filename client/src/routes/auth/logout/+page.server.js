@@ -1,8 +1,5 @@
 import { redirect } from "@sveltejs/kit";
 
-export async function load({ cookies }) {
-
-}
 export const actions = {
   logout: async ({ cookies }) => {
     cookies.set('accessToken', '', { path: '/', expires: 0, maxAge: 0 });

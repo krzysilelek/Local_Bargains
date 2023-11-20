@@ -16,6 +16,11 @@ router.get(
   errorHandler.catchAsync(DatabaseController.getBargains)
 );
 
+router.get(
+  "/api/bargain/:id",
+  errorHandler.catchAsync(DatabaseController.getBargain)
+);
+
 router.post(
   "/api/auth/login",
   errorHandler.catchAsync(DatabaseController.getPassword),
