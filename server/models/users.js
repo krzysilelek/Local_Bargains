@@ -23,5 +23,9 @@ module.exports = sequelize.define('users', {
   },
   avatar: {
     type: Sequelize.BLOB
+  },
+  active: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: '1'
   }
 });

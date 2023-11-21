@@ -55,6 +55,12 @@ export const actions = {
         data: { email },
         errors: { password: ["Bad password!"] }
       });
+    } else if (response.status === 403) {
+      const { email } = formData;
+      return fail(400, {
+        data: { email },
+        errors: { email: ['Your account is inactive. Please contact customer support.'] }
+      });
     }
     const { headers } = response;
     for (const str of set_cookie_parser.splitCookiesString(headers.get('set-cookie'))) {
