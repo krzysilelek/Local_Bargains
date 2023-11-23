@@ -22,7 +22,6 @@ export const actions = {
       }
     });
     const bargains = await response.json();
-    console.log(bargains);
     return { bargains };
   }
 }

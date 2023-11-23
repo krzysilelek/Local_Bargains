@@ -4,6 +4,7 @@
   let pageNumer = 1;
   export let data;
   const bargains = data.bargains;
+  export let form;
 </script>
 
 <svelte:head>
@@ -23,6 +24,17 @@
 
 {#if bargains}
   {#each bargains as bargain}
+    <a href="/bargains/{bargain?.id}">
+      <div>
+        <h2>{bargain?.title}</h2>
+        <h3>{bargain?.description}</h3>
+        <h4>{bargain?.tag}</h4>
+      </div>
+    </a>
+  {/each}
+{/if}
+{#if form?.bargains}
+  {#each form?.bargains as bargain}
     <a href="/bargains/{bargain?.id}">
       <div>
         <h2>{bargain?.title}</h2>
