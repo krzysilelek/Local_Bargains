@@ -2,6 +2,12 @@ import { fail, redirect } from '@sveltejs/kit';
 import * as set_cookie_parser from 'set-cookie-parser';
 import { z } from 'zod';
 
+export function load({ cookies }) {
+  if (cookies.get('accessToken')) {
+    throw redirect(303, '/');
+  }
+}
+
 const LoginScheme = z.object({
   email: z
     .string({ required_error: "Email is required!" })

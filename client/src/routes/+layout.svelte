@@ -1,5 +1,6 @@
 <script>
   import { AppBar } from "@skeletonlabs/skeleton";
+  import { Avatar } from "@skeletonlabs/skeleton";
   import "../app.pcss";
   export let data;
 </script>
@@ -11,8 +12,13 @@
   >
   <svelte:fragment slot="trail">
     {#if data.accessToken}
-      {data.accessToken}
-      <a href="/auth/logout"> Log out </a>
+      <a href="/" class="btn variant-filled-primary"> + Add New Bargain! </a>
+      <Avatar
+        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.mmarocks.pl%2Fwp-content%2Fuploads%2F2019%2F06%2Fpuidzix.jpg&f=1&nofb=1&ipt=458d294900f249e8074eb325fa48f77f4c284cc8734786168c6db2894024f8a5&ipo=images"
+        width="w-10"
+        rounded="rounded-full"
+      />
+      <a href="/auth/logout" class="btn variant-filled-primary"> Log out </a>
     {:else}
       <a href="/auth/register" class="btn variant-filled-primary"> Sign up </a>
       <a href="/auth/login" class="btn variant-filled-primary"> Sign in </a>
