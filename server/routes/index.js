@@ -42,4 +42,16 @@ router.post(
   errorHandler.catchAsync(DatabaseController.addNewUser)
 );
 
+router.get(
+  "/api/comments/:bargain_id",
+  errorHandler.catchAsync(DatabaseController.listAllComments)
+);
+
+router.post(
+  "/api/comments/add",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.addNewComment)
+);
+
+
 module.exports = router;

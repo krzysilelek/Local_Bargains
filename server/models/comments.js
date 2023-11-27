@@ -17,12 +17,22 @@ module.exports = sequelize.define('comments', {
       deferrable: Sequelize.INITIALLY_IMMEDIATE
     }
   },
+  user_id: {
+    type: Sequelize.UUID,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'user_id',
+      deferrable: Sequelize.INITIALLY_IMMEDIATE
+    }
+  },
   description: {
     type: Sequelize.TEXT,
     allowNull: false
   },
   date: {
     type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW,
     allowNull: false
   }
 });

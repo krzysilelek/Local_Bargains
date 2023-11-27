@@ -3,7 +3,7 @@ const Users = require('../models/users.js');
 const Roles = require('../models/roles.js');
 const UserRole = require('../models/user_roles.js');
 const Bargains = require('../models/bargains.js');
-require('../models/comments.js');
+const Comments = require('../models/comments.js');
 require('../models/reports.js');
 
 async function findUserUUID(_username) {

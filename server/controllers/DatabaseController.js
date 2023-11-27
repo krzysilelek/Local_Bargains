@@ -2,6 +2,8 @@ const sequelize = require('../database/sequelize.js');
 const Users = require('../models/users.js');
 const UserRole = require('../models/user_roles.js');
 const Bargains = require('../models/bargains.js');
+const Comments = require('../models/comments.js');
+
 const bcrypt = require('bcrypt');
 
 const paginate = (query, { page, pageSize }) => {
@@ -61,6 +63,7 @@ exports.getPassword = async (req, res, next) => {
   next();
 }
 
+
 exports.checkRole = async (req, res, next) => {
   const role = await UserRole.findOne({
     where: {
@@ -86,4 +89,32 @@ exports.addNewUser = async (req, res, next) => {
     next(err);
   }
   res.send("User has been created!");
+}
+
+exports.listAllComments = async (req, res) => {
+  const User = Comments.belongsTo(Users, { foreignKey: "user_id" });
+  const comments = await Comments.findAll({
+    where: {
+      bargain_id: req.params.bargain_id
+    },
+    include: [{
+      association: User,
+      attributes: ["username"]
+    }]
+  });
+  if (comments === null) return res.status(400).send("No comments!");
+  res.send(comments);
+}
+
+exports.addNewComment = async (req, res) => {
+  const bargain_id = req.body.bargain_id;
+  const user_id = req.user.payload;
+  const description = req.body.comment;
+
+  try {
+    await Comments.create({ bargain_id: bargain_id, user_id: user_id, description: description });
+  } catch (err) {
+    console.log(err);
+  }
+  res.send("Comment has been added!");
 }
