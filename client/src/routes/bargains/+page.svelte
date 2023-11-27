@@ -1,46 +1,47 @@
 <script>
-  const limits = [1, 2];
-  let selectedLimit;
-  let pageNumer = 1;
+  import { Paginator } from "@skeletonlabs/skeleton";
+  import Layout from "../+layout.svelte";
   export let data;
-  const bargains = data.bargains;
-  export let form;
+  let source = data.bargains;
+  let paginationSettings = {
+    page: 0,
+    limit: 5,
+    size: source.length,
+    amounts: [1, 2, 5, 10],
+  };
+
+  $: paginationSettings.size = source.length;
+
+  $: paginatedSource = source.slice(
+    paginationSettings.page * paginationSettings.limit,
+    paginationSettings.page * paginationSettings.limit +
+      paginationSettings.limit,
+  );
 </script>
 
 <svelte:head>
   <title>Local Bargains! - Bargains</title>
 </svelte:head>
 
-<form method="post">
-  <select name="limit" bind:value={selectedLimit}>
-    {#each limits as limit}
-      <option value={limit}>
-        {limit}
-      </option>
-    {/each}
-  </select>
-  <button type="submit"> Submit </button>
-</form>
+{#if paginatedSource}
+  {#each paginatedSource as row}
+    <a href="bargains/{row.id}">
+      <div>
+        <h2>
+          {row.title}
+        </h2>
+        <h3>
+          {row.description}
+        </h3>
+      </div>
+    </a>
+  {/each}
+{/if}
 
-{#if bargains}
-  {#each bargains as bargain}
-    <a href="/bargains/{bargain?.id}">
-      <div>
-        <h2>{bargain?.title}</h2>
-        <h3>{bargain?.description}</h3>
-        <h4>{bargain?.tag}</h4>
-      </div>
-    </a>
-  {/each}
-{/if}
-{#if form?.bargains}
-  {#each form?.bargains as bargain}
-    <a href="/bargains/{bargain?.id}">
-      <div>
-        <h2>{bargain?.title}</h2>
-        <h3>{bargain?.description}</h3>
-        <h4>{bargain?.tag}</h4>
-      </div>
-    </a>
-  {/each}
-{/if}
+<Paginator
+  bind:settings={paginationSettings}
+  showFirstLastButtons={true}
+  showPreviousNextButtons={true}
+  showNumerals
+  maxNumerals={1}
+/>

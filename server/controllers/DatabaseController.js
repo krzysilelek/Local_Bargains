@@ -21,7 +21,7 @@ exports.test = async (req, res, next) => {
   });
 };
 
-exports.getBargains = async (req, res, next) => {
+exports.getBargainsPaginate = async (req, res, next) => {
   const bargains = await Bargains.findAll(
     paginate(
       {
@@ -31,6 +31,11 @@ exports.getBargains = async (req, res, next) => {
     )
   );
 
+  res.send(bargains)
+}
+
+exports.getBargains = async (req, res, next) => {
+  const bargains = await Bargains.findAll();
   res.send(bargains)
 }
 

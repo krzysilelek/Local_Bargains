@@ -13,6 +13,11 @@ router.get(
 
 router.get(
   "/api/bargains/:pageSize/:page",
+  errorHandler.catchAsync(DatabaseController.getBargainsPaginate)
+);
+
+router.get(
+  "/api/bargains",
   errorHandler.catchAsync(DatabaseController.getBargains)
 );
 
