@@ -95,7 +95,9 @@
       class="xl:w-128 xl:h-128 w-96 h-96"
       bind:this={mapElement}
     ></div>
-
+    {#if data?.accessToken}
+      <button type="button" class="btn variant-filled-warning m-3"> ⚐ </button>
+    {/if}
     <div class="p-24 w-full h-full card">
       {#if data?.accessToken}
         <form class="label mb-10" method="post">

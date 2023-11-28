@@ -3,6 +3,7 @@ const Users = require('../models/users.js');
 const UserRole = require('../models/user_roles.js');
 const Bargains = require('../models/bargains.js');
 const Comments = require('../models/comments.js');
+const Reports = require('../models/reports.js');
 
 const bcrypt = require('bcrypt');
 
@@ -114,7 +115,20 @@ exports.addNewComment = async (req, res) => {
   try {
     await Comments.create({ bargain_id: bargain_id, user_id: user_id, description: description });
   } catch (err) {
-    console.log(err);
+    return res.status(400).send("Something went wrong!");
   }
   res.send("Comment has been added!");
+}
+
+exports.addNewReport = async (req, res) => {
+  const bargain_id = req.body.bargain_id;
+  const user_id = req.user.payload;
+  const description = req.body.description;
+
+  try {
+    await Reports.create({ bargain_id: bargain_id, user_id: user_id, description: description });
+  } catch (err) {
+    return res.status(400).send("Something went wrong!");
+  }
+  res.send("Report has been added!");
 }

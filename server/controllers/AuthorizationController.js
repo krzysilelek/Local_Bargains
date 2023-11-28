@@ -15,6 +15,7 @@ exports.login = async (req, res) => {
   const refreshToken = createRefreshToken(user.id, REFRESH_TOKEN_AGE);
 
   res.cookie('accessToken', accessToken, {
+    maxAge: 600000,
     httpOnly: true,
     secure: false
   });
@@ -52,6 +53,7 @@ exports.refresh = async (req, res) => {
     const user = await verifyRefreshToken(refreshToken);
     const accessToken = createAccessToken(user.payload, ACCESS_TOKEN_AGE);
     res.cookie('accessToken', accessToken, {
+      maxAge: 600000,
       httpOnly: true,
       secure: true
     });

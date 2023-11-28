@@ -17,11 +17,17 @@ module.exports = sequelize.define('reports', {
       deferrable: Sequelize.INITIALLY_IMMEDIATE
     }
   },
+  user_id: {
+    type: Sequelize.UUID,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'user_id',
+      deferrable: Sequelize.INITIALLY_IMMEDIATE
+    }
+  },
   description: {
     type: Sequelize.TEXT,
     allowNull: false
-  },
-  numberOfReports: {
-    type: Sequelize.INTEGER
   }
 });

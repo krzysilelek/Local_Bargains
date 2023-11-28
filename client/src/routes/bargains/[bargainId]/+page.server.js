@@ -53,7 +53,7 @@ export const actions = {
       mode: "no-cors",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Cookie": `accessToken=${cookies.get("accessToken")};refreshToken=${cookies.get("refreshToken")}`
+        "Cookie": `accessToken=${cookies.get("accessToken")}`
       },
       body: reqBody,
     });

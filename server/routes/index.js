@@ -53,5 +53,11 @@ router.post(
   errorHandler.catchAsync(DatabaseController.addNewComment)
 );
 
+router.post(
+  "/api/reports/add",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.addNewReport)
+);
+
 
 module.exports = router;
