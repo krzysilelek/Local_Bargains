@@ -7,7 +7,15 @@ const CommentScheme = z.object({
     .min(1, { message: "Comment is required!" })
     .max(1000, { message: "Comment must be less than 1000 characters!" })
     .trim()
-})
+});
+
+const ReportScheme = z.object({
+  report: z
+    .string({ required_error: "Report is required!" })
+    .min(1, { message: "Report is required!" })
+    .max(1000, { message: "Report must be less than 1000 characters!" })
+    .trim()
+});
 
 export async function load({ params }) {
   let response = await fetch(`http://localhost:3000/api/bargain/${params.bargainId}`, {
@@ -57,6 +65,33 @@ export const actions = {
       },
       body: reqBody,
     });
-    throw redirect(303, url.pathname)
+    throw redirect(303, url.pathname);
+  },
+  addReport: async ({ request, cookies, url }) => {
+    const formData = Object.fromEntries(await request.formData());
+    try {
+      ReportScheme.parse(formData);
+    } catch (err) {
+      const { fieldErrors: errors } = err.flatten();
+      return {
+        data: formData,
+        errors
+      };
+    }
+    const reqBody = new URLSearchParams();
+    for (const [key, value] of Object.entries(formData)) {
+      reqBody.append(key, value);
+    }
+
+    const response = await fetch("http://localhost:3000/api/reports/add", {
+      method: "post",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Cookie": `accessToken=${cookies.get("accessToken")}`
+      },
+      body: reqBody,
+    });
+    throw redirect(303, url.pathname);
   }
 }

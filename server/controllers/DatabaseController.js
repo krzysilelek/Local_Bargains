@@ -123,7 +123,7 @@ exports.addNewComment = async (req, res) => {
 exports.addNewReport = async (req, res) => {
   const bargain_id = req.body.bargain_id;
   const user_id = req.user.payload;
-  const description = req.body.description;
+  const description = req.body.report;
 
   try {
     await Reports.create({ bargain_id: bargain_id, user_id: user_id, description: description });
