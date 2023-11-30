@@ -11,8 +11,9 @@ exports.login = async (req, res) => {
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) return res.sendStatus(401);
 
-  const accessToken = createAccessToken(user.id, ACCESS_TOKEN_AGE);
-  const refreshToken = createRefreshToken(user.id, REFRESH_TOKEN_AGE);
+  const id = user.id;
+  const accessToken = createAccessToken(id, ACCESS_TOKEN_AGE);
+  const refreshToken = createRefreshToken(id, REFRESH_TOKEN_AGE);
 
   res.cookie('accessToken', accessToken, {
     maxAge: 600000,

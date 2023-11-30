@@ -22,7 +22,7 @@ const LoginScheme = z.object({
 });
 
 export const actions = {
-  form: async ({ request, url, cookies }) => {
+  form: async ({ request, url, cookies, event }) => {
     const formData = Object.fromEntries(await request.formData());
     try {
       LoginScheme.parse(formData);
@@ -68,11 +68,13 @@ export const actions = {
         errors: { email: ['Your account is inactive. Please contact customer support.'] }
       });
     }
+
     const { headers } = response;
     for (const str of set_cookie_parser.splitCookiesString(headers.get('set-cookie'))) {
       const { name, value, ...options } = set_cookie_parser.parseString(str);
       cookies.set(name, value, { ...options });
     }
+
     throw redirect(303, url.searchParams.get('redirectTo') || '/');
   }
 }

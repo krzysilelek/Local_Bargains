@@ -12,7 +12,9 @@
   >
   <svelte:fragment slot="trail">
     {#if data.accessToken}
-      <a href="/" class="btn variant-filled-primary"> + Add New Bargain! </a>
+      <a href="/user/{data.userId}" class="btn variant-filled-primary">
+        Manage Your Bargains!
+      </a>
       <Avatar
         src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.mmarocks.pl%2Fwp-content%2Fuploads%2F2019%2F06%2Fpuidzix.jpg&f=1&nofb=1&ipt=458d294900f249e8074eb325fa48f77f4c284cc8734786168c6db2894024f8a5&ipo=images"
         width="w-10"

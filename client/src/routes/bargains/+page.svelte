@@ -35,6 +35,9 @@
             <h2>
               {row.title}
             </h2>
+            <h2>
+              {row.tag.tag_name}
+            </h2>
             <h3>
               {row.description}
             </h3>

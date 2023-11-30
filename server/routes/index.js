@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const DatabaseController = require("../controllers/DatabaseController");
 const AuthorizationController = require("../controllers/AuthorizationController");
+const InformationController = require("../controllers/InformationController")
 const errorHandler = require("../handlers/errors");
 
 
@@ -57,6 +58,17 @@ router.post(
   "/api/reports/add",
   errorHandler.catchAsync(AuthorizationController.authenticate),
   errorHandler.catchAsync(DatabaseController.addNewReport)
+);
+
+router.get(
+  "/api/tags",
+  errorHandler.catchAsync(DatabaseController.getTags)
+);
+
+router.get(
+  "/api/user/getId",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(InformationController.getUserId)
 );
 
 

@@ -4,6 +4,7 @@ const UserRole = require('../models/user_roles.js');
 const Bargains = require('../models/bargains.js');
 const Comments = require('../models/comments.js');
 const Reports = require('../models/reports.js');
+const Tags = require('../models/tags.js');
 
 const bcrypt = require('bcrypt');
 
@@ -25,10 +26,15 @@ exports.test = async (req, res, next) => {
 };
 
 exports.getBargainsPaginate = async (req, res, next) => {
+  const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
   const bargains = await Bargains.findAll(
     paginate(
       {
         where: {},
+        include: [{
+          association: Tag,
+          attributes: ["tags"]
+        }]
       },
       { page: req.params.page, pageSize: req.params.pageSize }
     )
@@ -37,16 +43,27 @@ exports.getBargainsPaginate = async (req, res, next) => {
   res.send(bargains)
 }
 
-exports.getBargains = async (req, res, next) => {
-  const bargains = await Bargains.findAll();
+exports.getBargains = async (req, res) => {
+  const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
+  const bargains = await Bargains.findAll({
+    include: [{
+      association: Tag,
+      attributes: ["tag_name"]
+    }]
+  });
   res.send(bargains)
 }
 
 exports.getBargain = async (req, res) => {
+  const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
   const bargain = await Bargains.findOne({
     where: {
       id: req.params.id
-    }
+    },
+    include: [{
+      association: Tag,
+      attributes: ["tag_name"]
+    }]
   });
   if (bargain === null) return res.status(400).send("There is no bargain with that ID!");
   res.send(bargain);
@@ -132,3 +149,9 @@ exports.addNewReport = async (req, res) => {
   }
   res.send("Report has been added!");
 }
+
+exports.getTags = async (req, res) => {
+  const tags = await Tags.findAll();
+  res.send(tags);
+}
+

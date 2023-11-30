@@ -28,10 +28,14 @@ module.exports = sequelize.define('bargains', {
   picture: {
     type: Sequelize.BLOB
   },
-  tag: {
-    type: Sequelize.ENUM,
-    values: ['one', 'two'],
-    allowNull: false
+  tag_id: {
+    type: Sequelize.UUID,
+    allowNull: false,
+    references: {
+      model: 'tags',
+      key: 'tag_id',
+      deferrable: Sequelize.INITIALLY_IMMEDIATE
+    }
   },
   latitude: {
     type: Sequelize.FLOAT,

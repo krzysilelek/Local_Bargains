@@ -8,8 +8,6 @@
   export let form;
   export let data;
   const bargain = data.bargain;
-  let reportForm = form?.data?.reportFormValue === "true" ?? false;
-  console.log(true);
   let mapElement;
   let map;
   let source = data.comments;
@@ -19,6 +17,8 @@
     size: source.length,
     amounts: [1, 2, 5, 10],
   };
+
+  let reportForm = form?.data?.reportFormValue === "true" ?? false;
 
   $: paginationSettings.size = source.length;
 
@@ -86,7 +86,7 @@
     <div>
       <h2 class="h2">{bargain?.title}</h2>
       <h3 class="h3">{bargain?.description}</h3>
-      <h4 class="h4">{bargain?.tag}</h4>
+      <h4 class="h4">{bargain?.tag.tag_name}</h4>
     </div>
 
     <div
