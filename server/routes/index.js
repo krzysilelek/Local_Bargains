@@ -27,6 +27,13 @@ router.get(
   errorHandler.catchAsync(DatabaseController.getBargain)
 );
 
+router.get(
+  "/api/bargainsOfUser",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.getBargainsOfUser)
+);
+
+
 router.post(
   "/api/auth/login",
   errorHandler.catchAsync(DatabaseController.getPassword),
@@ -73,3 +80,4 @@ router.get(
 
 
 module.exports = router;
+

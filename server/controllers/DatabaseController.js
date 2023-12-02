@@ -33,7 +33,7 @@ exports.getBargainsPaginate = async (req, res, next) => {
         where: {},
         include: [{
           association: Tag,
-          attributes: ["tags"]
+          attributes: ["tag_name"]
         }]
       },
       { page: req.params.page, pageSize: req.params.pageSize }
@@ -41,6 +41,22 @@ exports.getBargainsPaginate = async (req, res, next) => {
   );
 
   res.send(bargains)
+}
+
+exports.getBargainsOfUser = async (req, res) => {
+  const { payload } = req.user;
+  const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
+  const bargains = await Bargains.findAll({
+    where: {
+      user_id: payload
+    },
+    include: [{
+      association: Tag,
+      attributes: ["tag_name"]
+    }]
+
+  });
+  res.send(bargains);
 }
 
 exports.getBargains = async (req, res) => {

@@ -12,7 +12,7 @@
   >
   <svelte:fragment slot="trail">
     {#if data.accessToken}
-      <a href="/user/{data.userId}" class="btn variant-filled-primary">
+      <a href="/user/{data.id}" class="btn variant-filled-primary">
         Manage Your Bargains!
       </a>
       <Avatar
