@@ -5,7 +5,6 @@ const AuthorizationController = require("../controllers/AuthorizationController"
 const InformationController = require("../controllers/InformationController")
 const errorHandler = require("../handlers/errors");
 
-
 router.get(
   "/api/users",
   errorHandler.catchAsync(AuthorizationController.authenticate),
@@ -32,6 +31,12 @@ router.get(
   errorHandler.catchAsync(AuthorizationController.authenticate),
   errorHandler.catchAsync(DatabaseController.getBargainsOfUser)
 );
+
+router.post(
+  "/api/bargains/add",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.addNewBargain)
+)
 
 
 router.post(

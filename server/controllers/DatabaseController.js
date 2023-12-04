@@ -50,6 +50,7 @@ exports.getBargainsOfUser = async (req, res) => {
     where: {
       user_id: payload
     },
+    attributes: ["id", "title", "description"],
     include: [{
       association: Tag,
       attributes: ["tag_name"]
@@ -62,12 +63,13 @@ exports.getBargainsOfUser = async (req, res) => {
 exports.getBargains = async (req, res) => {
   const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
   const bargains = await Bargains.findAll({
+    attributes: ["id", "title", "description"],
     include: [{
       association: Tag,
       attributes: ["tag_name"]
     }]
   });
-  res.send(bargains)
+  res.send(bargains);
 }
 
 exports.getBargain = async (req, res) => {
@@ -83,6 +85,22 @@ exports.getBargain = async (req, res) => {
   });
   if (bargain === null) return res.status(400).send("There is no bargain with that ID!");
   res.send(bargain);
+}
+
+exports.addNewBargain = async (req, res, next) => {
+  const { payload } = req.user
+  const title = req.body.title;
+  const description = req.body.description;
+  const picture = req.body.base64Photo ?? "";
+  const tag = req.body.tag;
+  const latitude = req.body.latitude;
+  const longitude = req.body.longitude;
+  try {
+    await Bargains.create({ user_id: payload, title: title, description: description, picture: picture, tag_id: tag, latitude: latitude, longitude: longitude });
+  } catch (err) {
+    return next(err);
+  }
+  res.send("Bargain has been created!");
 }
 
 

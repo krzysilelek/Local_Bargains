@@ -12,7 +12,7 @@
   >
   <svelte:fragment slot="trail">
     {#if data.accessToken}
-      <a href="/user/{data.id}" class="btn variant-filled-primary">
+      <a href="/user/{data?.id}" class="btn variant-filled-primary">
         Manage Your Bargains!
       </a>
       <Avatar
@@ -20,10 +20,25 @@
         width="w-10"
         rounded="rounded-full"
       />
-      <a href="/auth/logout" class="btn variant-filled-primary"> Log out </a>
+      <a
+        href="/auth/logout?redirectTo={data?.redirectTo}"
+        class="btn variant-filled-primary"
+      >
+        Log out
+      </a>
     {:else}
-      <a href="/auth/register" class="btn variant-filled-primary"> Sign up </a>
-      <a href="/auth/login" class="btn variant-filled-primary"> Sign in </a>
+      <a
+        href="/auth/register?redirectTo={data?.redirectTo}"
+        class="btn variant-filled-primary"
+      >
+        Sign up
+      </a>
+      <a
+        href="/auth/login?redirectTo={data?.redirectTo}"
+        class="btn variant-filled-primary"
+      >
+        Sign in
+      </a>
     {/if}
   </svelte:fragment>
 </AppBar>

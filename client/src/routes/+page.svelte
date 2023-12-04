@@ -14,7 +14,6 @@
     <form action="">
       <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
         <select class="select">
-          <option value="0">+0km</option>
           <option value="2">+2km</option>
           <option value="5">+5km</option>
           <option value="10">+10km</option>
@@ -23,7 +22,7 @@
           <option value="75">+75km</option>
           <option value="100">+100km</option>
         </select>
-        <input type="search" placeholder="City..." />
+        <input type="search" placeholder="Your localization" />
         <button class="variant-filled-primary">Submit</button>
       </div>
     </form>

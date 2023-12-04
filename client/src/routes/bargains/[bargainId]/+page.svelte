@@ -11,6 +11,7 @@
   let mapElement;
   let map;
   let source = data.comments;
+
   let paginationSettings = {
     page: 0,
     limit: 5,
@@ -68,10 +69,18 @@
 
   onDestroy(async () => {
     if (map) {
-      console.log("Unloading Leaflet map.");
       map.remove();
     }
   });
+
+  function convertIntoASCII(decimal) {
+    let imgASCII = "";
+    for (let number of decimal) {
+      imgASCII += String.fromCharCode(number);
+    }
+    console.log(decimal.length);
+    return imgASCII;
+  }
 </script>
 
 <svelte:head>
@@ -86,6 +95,13 @@
     <div>
       <h2 class="h2">{bargain?.title}</h2>
       <h3 class="h3">{bargain?.description}</h3>
+      {#if bargain?.picture?.data.length !== 0}
+        <img
+          class="w-96"
+          src={convertIntoASCII(bargain?.picture?.data)}
+          alt="bargain"
+        />
+      {/if}
       <h4 class="h4">{bargain?.tag.tag_name}</h4>
     </div>
 
