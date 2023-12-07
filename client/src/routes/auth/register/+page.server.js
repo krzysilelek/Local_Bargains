@@ -49,7 +49,6 @@ export const actions = {
     }
     const response = await fetch("http://localhost:3000/api/auth/register", {
       method: "post",
-      mode: "no-cors",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },

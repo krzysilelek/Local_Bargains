@@ -7,9 +7,11 @@ const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const routes = require("./routes/index");
 const errorHandler = require("./handlers/errors");
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 app.use(cookieParser());

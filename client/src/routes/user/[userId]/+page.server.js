@@ -31,7 +31,6 @@ export async function load({ fetch, cookies, url }) {
 
   let response = await fetch("http://localhost:3000/api/bargainsOfUser", {
     method: "get",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -40,7 +39,6 @@ export async function load({ fetch, cookies, url }) {
 
   response = await fetch("http://localhost:3000/api/tags", {
     method: "get",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -77,7 +75,6 @@ export const actions = {
     reqBody.delete("localization");
     const response = await fetch("http://localhost:3000/api/bargains/add", {
       method: "post",
-      mode: "no-cors",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Cookie": `accessToken=${cookies.get("accessToken")}`

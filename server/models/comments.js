@@ -15,7 +15,9 @@ module.exports = sequelize.define('comments', {
       model: 'bargains',
       key: 'bargain_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
-    }
+    },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
   },
   user_id: {
     type: Sequelize.UUID,
@@ -24,7 +26,9 @@ module.exports = sequelize.define('comments', {
       model: 'users',
       key: 'user_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
-    }
+    },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
   },
   description: {
     type: Sequelize.TEXT,
@@ -34,5 +38,9 @@ module.exports = sequelize.define('comments', {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW,
     allowNull: false
+  },
+  rate: {
+    type: Sequelize.ENUM,
+    values: ['Good', 'Bad']
   }
 });

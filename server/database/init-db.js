@@ -45,8 +45,8 @@ async function build() {
   await UserRole.create({ user_id: await findUserUUID('userek'), role_id: await findRoleUUID('User') });
   await Tags.create({ tag_name: 'ONE' });
   await Tags.create({ tag_name: 'TWO' });
-  await Bargains.create({ user_id: await findUserUUID('userek'), title: 'TEST BARGAIN 1', tag_id: await findTagUUID('ONE'), latitude: 50.12, longitude: 40.21 });
-  await Bargains.create({ user_id: await findUserUUID('walidator03'), title: 'TEST BARGAIN 2', tag_id: await findTagUUID('TWO'), latitude: 50.12, longitude: 40.21 });
+  await Bargains.create({ user_id: await findUserUUID('userek'), title: 'TEST BARGAIN 1', tag_id: await findTagUUID('ONE'), latitude: 50.12, longitude: 40.21, picture: '' });
+  await Bargains.create({ user_id: await findUserUUID('walidator03'), title: 'TEST BARGAIN 2', tag_id: await findTagUUID('TWO'), latitude: 50.12, longitude: 40.21, picture: '' });
 }
 
 build();

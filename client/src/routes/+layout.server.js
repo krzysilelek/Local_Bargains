@@ -5,7 +5,6 @@ export async function load({ cookies, url }) {
   const accessToken = cookies.get('accessToken');
   const response = await fetch("http://localhost:3000/api/user/getId", {
     method: "get",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "Cookie": `accessToken=${accessToken}`

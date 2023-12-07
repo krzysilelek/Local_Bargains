@@ -15,7 +15,9 @@ module.exports = sequelize.define('bargains', {
       model: 'users',
       key: 'user_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
-    }
+    },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
   },
   title: {
     field: 'bargain_title',
@@ -30,12 +32,13 @@ module.exports = sequelize.define('bargains', {
   },
   tag_id: {
     type: Sequelize.UUID,
-    allowNull: false,
     references: {
       model: 'tags',
       key: 'tag_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
-    }
+    },
+    onDelete: "SET NULL",
+    onUpdate: "CASCADE"
   },
   latitude: {
     type: Sequelize.FLOAT,

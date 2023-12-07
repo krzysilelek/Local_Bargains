@@ -20,7 +20,6 @@ const ReportScheme = z.object({
 export async function load({ params }) {
   let response = await fetch(`http://localhost:3000/api/bargain/${params.bargainId}`, {
     method: "get",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -29,7 +28,6 @@ export async function load({ params }) {
 
   response = await fetch(`http://localhost:3000/api/comments/${params.bargainId}`, {
     method: "get",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -58,7 +56,6 @@ export const actions = {
 
     const response = await fetch("http://localhost:3000/api/comments/add", {
       method: "post",
-      mode: "no-cors",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Cookie": `accessToken=${cookies.get("accessToken")}`

@@ -9,7 +9,9 @@ module.exports = sequelize.define('user_roles', {
       model: 'users',
       key: 'user_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
-    }
+    },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
   },
   role_id: {
     type: Sequelize.UUID,
@@ -17,6 +19,8 @@ module.exports = sequelize.define('user_roles', {
       model: 'roles',
       key: 'role_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
-    }
+    },
+    onDelete: "SET NULL",
+    onUpdate: "CASCADE"
   }
 });

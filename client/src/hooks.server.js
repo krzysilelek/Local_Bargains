@@ -11,7 +11,6 @@ export async function handle({ event, resolve }) {
   }
   const response = await fetch("http://localhost:3000/api/auth/refresh", {
     method: "post",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "Cookie": `refreshToken=${refreshToken}`

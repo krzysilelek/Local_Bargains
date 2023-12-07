@@ -15,7 +15,10 @@ module.exports = sequelize.define('reports', {
       model: 'bargains',
       key: 'bargain_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
-    }
+    },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+
   },
   user_id: {
     type: Sequelize.UUID,
@@ -24,7 +27,9 @@ module.exports = sequelize.define('reports', {
       model: 'users',
       key: 'user_id',
       deferrable: Sequelize.INITIALLY_IMMEDIATE
-    }
+    },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
   },
   description: {
     type: Sequelize.TEXT,
