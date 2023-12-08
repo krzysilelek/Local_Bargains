@@ -60,6 +60,21 @@ exports.getBargainsOfUser = async (req, res) => {
   res.send(bargains);
 }
 
+exports.getLocalBargains = async (req, res) => {
+  const { client_lat, client_lon, radius } = req.params;
+  const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
+  const haversineFormula = `(6371 * acos(cos(radians(${client_lat})) * cos(radians(latitude)) * cos(radians(${client_lon}) - radians(longitude)) + sin(radians(${client_lat})) * sin(radians(latitude))))`;
+  const bargains = await Bargains.findAll({
+    attributes: ["id", "title", "description"],
+    include: [{
+      association: Tag,
+      attributes: ["tag_name"]
+    }],
+    where: sequelize.literal(`${haversineFormula} < ${radius}`)
+  });
+  res.send(bargains);
+}
+
 exports.getBargains = async (req, res) => {
   const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
   const bargains = await Bargains.findAll({

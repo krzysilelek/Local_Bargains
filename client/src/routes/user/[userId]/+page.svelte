@@ -109,7 +109,7 @@
     >
       <header class="h2 p-4">A new bargain</header>
       <section class="p-4">
-        <form class="label" method="post" enctype="multipart/form-data">
+        <form class="label" method="post">
           <input type="hidden" name="addFormValue" value={addForm} />
           <label for="title">
             <span class="label">Title</span>

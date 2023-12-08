@@ -78,7 +78,6 @@
     for (let number of decimal) {
       imgASCII += String.fromCharCode(number);
     }
-    console.log(decimal.length);
     return imgASCII;
   }
 </script>
