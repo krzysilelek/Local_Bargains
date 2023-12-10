@@ -1,4 +1,4 @@
-exports.getUserId = async (req, res) => {
+exports.getUserInfo = async (req, res) => {
   const user = req.user;
-  res.send({ id: user.payload });
+  res.send({ id: user.id, role: req.role_name });
 }

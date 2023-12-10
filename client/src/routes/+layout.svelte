@@ -12,6 +12,11 @@
   >
   <svelte:fragment slot="trail">
     {#if data.accessToken}
+      {#if data.role === "Administrator"}
+        <a href="/admin-panel" class="btn variant-filled-primary">
+          Administrator panel
+        </a>
+      {/if}
       <a href="/user/{data?.id}" class="btn variant-filled-primary">
         Manage Your Bargains!
       </a>

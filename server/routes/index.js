@@ -58,11 +58,14 @@ router.delete(
 router.post(
   "/api/auth/login",
   errorHandler.catchAsync(DatabaseController.getPassword),
+  errorHandler.catchAsync(DatabaseController.checkRole),
   errorHandler.catchAsync(AuthorizationController.login)
 );
 
 router.post(
   "/api/auth/refresh",
+  errorHandler.catchAsync(AuthorizationController.decodeRefreshToken),
+  errorHandler.catchAsync(DatabaseController.checkActiveStatus),
   errorHandler.catchAsync(AuthorizationController.refresh)
 );
 
@@ -94,9 +97,11 @@ router.get(
 );
 
 router.get(
-  "/api/user/getId",
+  "/api/user/getInfo",
   errorHandler.catchAsync(AuthorizationController.authenticate),
-  errorHandler.catchAsync(InformationController.getUserId)
+  errorHandler.catchAsync(DatabaseController.checkRole),
+  errorHandler.catchAsync(DatabaseController.getRoleName),
+  errorHandler.catchAsync(InformationController.getUserInfo)
 );
 
 

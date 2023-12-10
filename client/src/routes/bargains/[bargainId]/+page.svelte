@@ -126,6 +126,19 @@
       {#if data?.accessToken}
         <form class="label mb-10" method="post">
           <input type="hidden" name="bargain_id" value={bargain?.id} />
+          <label for="rate">
+            <span class="label">Rate</span>
+            <select name="rate" class="select">
+              <option value="Good">Good</option>
+              <option value="Bad">Bad</option>
+            </select>
+            {#if form?.errors?.rate}
+              <span class="label text-red-700">
+                {form?.errors?.rate[0]}
+              </span>
+            {/if}
+          </label>
+
           <label for="comment">
             <span>Your comment</span>
             <textarea
@@ -156,6 +169,9 @@
             <h3 class="h3">
               {row.user.username} - {formalizeDate(new Date(row.date))}
             </h3>
+            <h4 class="h4 mt-3">
+              {row.rate}
+            </h4>
             <p class="p mt-3">
               {row.description}
             </p>

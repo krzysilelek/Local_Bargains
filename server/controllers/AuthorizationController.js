@@ -12,8 +12,9 @@ exports.login = async (req, res) => {
   if (!validPassword) return res.sendStatus(401);
 
   const id = user.id;
-  const accessToken = createAccessToken(id, ACCESS_TOKEN_AGE);
-  const refreshToken = createRefreshToken(id, REFRESH_TOKEN_AGE);
+  const roleId = req.user_role.role_id;
+  const accessToken = createAccessToken({ id, roleId }, ACCESS_TOKEN_AGE);
+  const refreshToken = createRefreshToken({ id, roleId }, REFRESH_TOKEN_AGE);
 
   res.cookie('accessToken', accessToken, {
     maxAge: 600000,
@@ -35,15 +36,26 @@ exports.authenticate = async (req, res, next) => {
   if (accessToken === null) return res.sendStatus(401);
 
   try {
-    const user = await verifyAccessToken(accessToken);
-    if (user.active === false) return res.sendStatus(403);
-    req.user = user;
-
+    const { payload } = await verifyAccessToken(accessToken);
+    req.user = payload;
   } catch (err) {
     return res.sendStatus(403);
   }
   next();
 };
+
+exports.decodeRefreshToken = async (req, res, next) => {
+  const { refreshToken } = req.cookies ?? null;
+  if (refreshToken === null) return res.status(401);
+
+  try {
+    const { payload } = await verifyRefreshToken(refreshToken);
+    req.user = payload;
+  } catch (err) {
+    return res.sendStatus(403);
+  }
+  next();
+}
 
 exports.refresh = async (req, res) => {
   const { refreshToken } = req.cookies ?? null;

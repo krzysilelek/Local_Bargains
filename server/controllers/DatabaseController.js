@@ -5,6 +5,7 @@ const Bargains = require('../models/bargains.js');
 const Comments = require('../models/comments.js');
 const Reports = require('../models/reports.js');
 const Tags = require('../models/tags.js');
+const Roles = require('../models/roles.js');
 
 const bcrypt = require('bcrypt');
 
@@ -44,11 +45,10 @@ exports.getBargainsPaginate = async (req, res, next) => {
 }
 
 exports.getBargainsOfUser = async (req, res) => {
-  const { payload } = req.user;
   const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
   const bargains = await Bargains.findAll({
     where: {
-      user_id: payload
+      user_id: req.user.id
     },
     attributes: ["id", "title", "description"],
     include: [{
@@ -103,14 +103,10 @@ exports.getBargain = async (req, res) => {
 }
 
 exports.addNewBargain = async (req, res) => {
-  const { payload } = req.user
-  const title = req.body.title;
-  const description = req.body.description;
-  const picture = req.body.base64Photo ?? "";
-  const tag = req.body.tag;
-  const latitude = req.body.latitude;
-  const longitude = req.body.longitude;
-  await Bargains.create({ user_id: payload, title: title, description: description, picture: picture, tag_id: tag, latitude: latitude, longitude: longitude });
+  const { id } = req.user
+  const { title, description, base64Photo: picture = "", tag, latitude, longitude } = req.body;
+
+  await Bargains.create({ user_id: id, title: title, description: description, picture: picture, tag_id: tag, latitude: latitude, longitude: longitude });
   res.send("Bargain has been created!");
 }
 
@@ -166,6 +162,17 @@ exports.getPassword = async (req, res, next) => {
   next();
 }
 
+exports.checkActiveStatus = async (req, res, next) => {
+  const user = await Users.findOne({
+    where: {
+      id: req.user.id
+    }
+  });
+  if (user === null) return res.sendStatus(418);
+  if (user.active !== true) return res.sendStatus(403);
+  next();
+}
+
 
 exports.checkRole = async (req, res, next) => {
   const role = await UserRole.findOne({
@@ -174,17 +181,33 @@ exports.checkRole = async (req, res, next) => {
     }
   });
   if (role === null) return res.status(400).send("User is roleless!");
-  req.user_rol = role;
+  req.user_role = role;
   next();
 }
 
+exports.getRoleName = async (req, res, next) => {
+  const role = await Roles.findOne({
+    where: {
+      id: req.user_role.role_id
+    }
+  });
+  if (role === null) return res.status(400).send("No role with that UUID!");
+  req.role_name = role.role_name;
+  next();
+}
 exports.addNewUser = async (req, res, next) => {
-  const username = req.body.username;
-  const email = req.body.email;
-  let password = req.body.password;
+  const { username, email } = req.body;
+  let { password } = req.body;
   password = await bcrypt.hash(password, 10);
   try {
-    await Users.create({ username: username, password: password, email: email });
+    const user = await Users.create({ username: username, password: password, email: email });
+    const role = await Roles.findOne({
+      where: {
+        role_name: "User"
+      }
+    });
+    await UserRole.create({ user_id: user.id, role_id: role.id });
+
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
       res.status(409).send("Email is already used!");
@@ -203,19 +226,23 @@ exports.listAllComments = async (req, res) => {
     include: [{
       association: User,
       attributes: ["username"]
-    }]
+    }],
+    order: [
+      ["date", "DESC"]
+    ]
   });
   if (comments === null) return res.status(400).send("No comments!");
   res.send(comments);
 }
 
 exports.addNewComment = async (req, res) => {
-  const bargain_id = req.body.bargain_id;
-  const user_id = req.user.payload;
-  const description = req.body.comment;
+  const {
+    bargain_id, comment: description, rate
+  } = req.body;
+  const { id: user_id } = req.user;
 
   try {
-    await Comments.create({ bargain_id: bargain_id, user_id: user_id, description: description });
+    await Comments.create({ bargain_id: bargain_id, user_id: user_id, description: description, rate: rate });
   } catch (err) {
     return res.status(400).send("Something went wrong!");
   }
@@ -223,10 +250,8 @@ exports.addNewComment = async (req, res) => {
 }
 
 exports.addNewReport = async (req, res) => {
-  const bargain_id = req.body.bargain_id;
-  const user_id = req.user.payload;
-  const description = req.body.report;
-
+  const { bargain_id, report: description } = req.body;
+  const { user_id } = req.user;
   try {
     await Reports.create({ bargain_id: bargain_id, user_id: user_id, description: description });
   } catch (err) {

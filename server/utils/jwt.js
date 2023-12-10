@@ -9,11 +9,11 @@ function createRefreshToken(payload, time) {
 }
 
 async function verifyAccessToken(accessToken) {
-  return await jwt.verify(accessToken, process.env.TOKEN_SECRET);
+  return jwt.verify(accessToken, process.env.TOKEN_SECRET);
 }
 
 async function verifyRefreshToken(refreshToken) {
-  return await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+  return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 }
 
 module.exports = { createAccessToken, createRefreshToken, verifyAccessToken, verifyRefreshToken };

@@ -6,6 +6,9 @@ const CommentScheme = z.object({
     .string({ required_error: "Comment is required!" })
     .min(1, { message: "Comment is required!" })
     .max(1000, { message: "Comment must be less than 1000 characters!" })
+    .trim(),
+  rate: z
+    .string()
     .trim()
 });
 
