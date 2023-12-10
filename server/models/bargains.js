@@ -20,7 +20,6 @@ module.exports = sequelize.define('bargains', {
     onUpdate: "CASCADE"
   },
   title: {
-    field: 'bargain_title',
     type: Sequelize.STRING(50),
     allowNull: false
   },

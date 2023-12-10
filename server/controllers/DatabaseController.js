@@ -102,7 +102,7 @@ exports.getBargain = async (req, res) => {
   res.send(bargain);
 }
 
-exports.addNewBargain = async (req, res, next) => {
+exports.addNewBargain = async (req, res) => {
   const { payload } = req.user
   const title = req.body.title;
   const description = req.body.description;
@@ -110,12 +110,48 @@ exports.addNewBargain = async (req, res, next) => {
   const tag = req.body.tag;
   const latitude = req.body.latitude;
   const longitude = req.body.longitude;
-  try {
-    await Bargains.create({ user_id: payload, title: title, description: description, picture: picture, tag_id: tag, latitude: latitude, longitude: longitude });
-  } catch (err) {
-    return next(err);
-  }
+  await Bargains.create({ user_id: payload, title: title, description: description, picture: picture, tag_id: tag, latitude: latitude, longitude: longitude });
   res.send("Bargain has been created!");
+}
+
+exports.editBargain = async (req, res) => {
+
+  const {
+    bargainId: id,
+    title = "",
+    description = "",
+    base64Photo: picture = "",
+    tag = "",
+    latitude = "",
+    longitude = "",
+  } = req.body;
+
+  const updateFields = {};
+  if (title !== "") updateFields.title = title;
+  if (description !== "") updateFields.description = description;
+  if (picture !== "") updateFields.picture = picture;
+  if (tag !== "") updateFields.tag_id = tag;
+  if (latitude !== "") updateFields.latitude = latitude;
+  if (longitude !== "") updateFields.longitude = longitude;
+
+  const updateQuery = `UPDATE bargains SET ${Object.keys(updateFields).map(key => `${key} = :${key}`).join(', ')} WHERE bargain_id = :id`;
+
+  await sequelize.query(updateQuery, {
+    replacements: { ...updateFields, id },
+    type: sequelize.QueryTypes.UPDATE,
+  });
+
+  res.send("Bargain has been updated!");
+}
+
+exports.deleteBargain = async (req, res) => {
+  const id = req.body.bargainId;
+  await Bargains.destroy({
+    where: {
+      id: id
+    },
+  });
+  res.send("Bargain has been deleted!");
 }
 
 

@@ -43,6 +43,17 @@ router.post(
   errorHandler.catchAsync(DatabaseController.addNewBargain)
 )
 
+router.put(
+  "/api/bargains/edit",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.editBargain)
+);
+
+router.delete(
+  "/api/bargains/delete",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.deleteBargain)
+);
 
 router.post(
   "/api/auth/login",

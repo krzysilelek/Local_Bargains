@@ -29,7 +29,10 @@
     file = e.target.files?.[0];
   }
 
-  let editForm = false;
+  let editForm = form?.data?.editFormValue === "true" ?? false;
+  let selectedBargainsId = form?.data?.bargainId ?? null;
+
+  let deleteForm = false;
 </script>
 
 <svelte:head>
@@ -67,8 +70,10 @@
             </h3>
           </a>
           <button
-            on:click={() => {
+            name={row.id}
+            on:click={(event) => {
               editForm = true;
+              selectedBargainsId = event.target.name;
             }}
             type="button"
             class="btn variant-filled-warning m-3"
@@ -77,8 +82,9 @@
           </button>
           <button
             name={row.id}
-            on:click={() => {
-              editForm = true;
+            on:click={(event) => {
+              deleteForm = true;
+              selectedBargainsId = event.target.name;
             }}
             type="button"
             class="btn variant-filled-error m-3"
@@ -224,41 +230,147 @@
     in:fly={{ y: 200, duration: 500 }}
   >
     <div
-      class="card bg-gradient-to-br variant-gradient-warning-error w-96 h-96"
+      class="card bg-gradient-to-br variant-gradient-primary-secondary w-96 h-auto"
     >
-      <header class="h2 p-4">What happened? Tell us!</header>
+      <header class="h2 p-4">Edit the bargain</header>
       <section class="p-4">
         <form class="label" method="post">
-          <input type="hidden" name="reportFormValue" value={addForm} />
-          <label for="report">
-            <textarea
-              class="textarea h-36 resize-none"
+          <input type="hidden" name="editFormValue" value={editForm} />
+          <input type="hidden" name="bargainId" value={selectedBargainsId} />
+          <label for="title">
+            <span class="label">Title</span>
+            <input
+              class="input"
               type="text"
-              name="report"
-              placeholder="This bargain..."
-              value={form?.data?.report ?? ""}
+              name="title"
+              placeholder="Title"
+              value={form?.data?.title ?? ""}
             />
-            {#if form?.errors?.report}
+            {#if form?.errors?.title}
               <span class="label text-red-700">
-                {form?.errors?.report[0]}
+                {form?.errors?.title[0]}
               </span>
             {/if}
           </label>
+
+          <label for="description">
+            <span class="label">Description</span>
+            <textarea
+              class="textarea h-36 resize-none"
+              type="text"
+              name="description"
+              placeholder="Description"
+              value={form?.data?.description ?? ""}
+            />
+            {#if form?.errors?.description}
+              <span class="label text-red-700">
+                {form?.errors?.description[0]}
+              </span>
+            {/if}
+          </label>
+
+          <label for="tag">
+            <span class="label">Tag</span>
+            <select name="tag" class="select">
+              {#each data?.tags as tag}
+                {#if form?.data?.tag === tag.id}
+                  <option value={tag.id} selected>{tag.tag_name}</option>
+                {:else}
+                  <option value={tag.id}>{tag.tag_name}</option>
+                {/if}
+              {/each}
+            </select>
+            {#if form?.errors?.tag}
+              <span class="label text-red-700">
+                {form?.errors?.tag[0]}
+              </span>
+            {/if}
+          </label>
+
+          <label for="localization">
+            <span class="label">Localization</span>
+            <input
+              class="input"
+              type="text"
+              name="localization"
+              placeholder="Localization"
+              value={form?.data?.localization ?? ""}
+            />
+            {#if form?.errors?.localization}
+              <span class="label text-red-700">
+                {form?.errors?.localization[0]}
+              </span>
+            {/if}
+          </label>
+
+          <label for="picture">
+            <span class="label">Picture (optional)</span>
+            <input
+              class="input"
+              type="file"
+              name="picture"
+              accept="image/jpeg, image/png, image/jpg"
+              maxlength="5242880"
+              on:input={on_file_input}
+            />
+            {#if form?.errors?.picture}
+              <span class="label text-red-700">
+                {form?.errors?.picture[0]}
+              </span>
+            {/if}
+          </label>
+
+          <input type="hidden" name="base64Photo" value={$file_result} />
+
           <button
             on:click={() => {
               editForm = false;
             }}
-            class="btn bg-gradient-to-br variant-gradient-warning-error mt-8 border-4"
+            class="btn variant-filled-secondary mt-8 border-4"
           >
             Cancel
           </button>
 
           <button
             type="submit"
-            class="btn bg-gradient-to-br variant-gradient-warning-error mt-8 border-4"
-            formaction="?/addReport"
+            class="btn variant-filled-secondary mt-8 border-4"
+            formaction="?/editBargain"
           >
-            Send a report
+            Edit the bargain!
+          </button>
+        </form>
+      </section>
+    </div>
+  </div>
+{/if}
+
+{#if deleteForm === true}
+  <div
+    class="absolute w-screen h-screen top-0 flex justify-center items-center z-10"
+    in:fly={{ y: 200, duration: 500 }}
+  >
+    <div
+      class="card bg-gradient-to-br variant-gradient-primary-secondary w-96 h-auto"
+    >
+      <header class="h2 p-4">Delete the bargain?</header>
+      <section class="p-4">
+        <form class="label" method="post">
+          <input type="hidden" name="bargainId" value={selectedBargainsId} />
+          <button
+            on:click={() => {
+              deleteForm = false;
+            }}
+            class="btn variant-filled-secondary mt-8 border-4"
+          >
+            No
+          </button>
+
+          <button
+            type="submit"
+            class="btn variant-filled-secondary mt-8 border-4"
+            formaction="?/deleteBargain"
+          >
+            Yes
           </button>
         </form>
       </section>
