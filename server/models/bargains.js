@@ -24,7 +24,8 @@ module.exports = sequelize.define('bargains', {
     allowNull: false
   },
   description: {
-    type: Sequelize.TEXT
+    type: Sequelize.TEXT,
+    allowNull: false
   },
   picture: {
     type: Sequelize.BLOB

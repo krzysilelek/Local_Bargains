@@ -41,6 +41,7 @@ module.exports = sequelize.define('comments', {
   },
   rate: {
     type: Sequelize.ENUM,
-    values: ['Good', 'Bad']
+    values: ['Good', 'Bad'],
+    allowNull: false
   }
 });

@@ -1,4 +1,5 @@
 const sequelize = require('../database/sequelize.js');
+const { Op } = require('sequelize');
 const Users = require('../models/users.js');
 const UserRole = require('../models/user_roles.js');
 const Bargains = require('../models/bargains.js');
@@ -20,11 +21,41 @@ const paginate = (query, { page, pageSize }) => {
   };
 };
 
-exports.test = async (req, res, next) => {
-  Users.findAll().then((users) => {
-    res.send(users);
+exports.getUsers = async (req, res) => {
+
+  const users = await Users.findAll({
+    where: {
+      id: { [Op.ne]: req.user.id }
+    },
+    attributes: ["id", "username", "active"],
+    order: [
+      ["username", "ASC"]
+    ]
   });
+  res.send(users);
 };
+
+exports.deleteUser = async (req, res) => {
+  await Users.destroy({
+    where: {
+      id: req.body.userId
+    },
+  });
+  res.send("User has been deleted!");
+};
+
+exports.switchActive = async (req, res) => {
+  const { userId } = req.body;
+  const user = await Users.findOne({
+    where: {
+      id: userId
+    }
+  });
+
+  user.active = !user.active;
+  await user.save();
+  res.send("Active status has been changed!");
+}
 
 exports.getBargainsPaginate = async (req, res, next) => {
   const Tag = Bargains.belongsTo(Tags, { foreignKey: "tag_id" });
@@ -185,6 +216,18 @@ exports.checkRole = async (req, res, next) => {
   next();
 }
 
+exports.checkIfAdmin = async (req, res, next) => {
+  const role = await Roles.findOne({
+    where: {
+      id: req.user.roleId
+    }
+  });
+  if (role.role_name !== "Administrator") {
+    return res.status(400).send("Users is not an Administrator!");
+  }
+  next();
+}
+
 exports.getRoleName = async (req, res, next) => {
   const role = await Roles.findOne({
     where: {
@@ -261,7 +304,46 @@ exports.addNewReport = async (req, res) => {
 }
 
 exports.getTags = async (req, res) => {
-  const tags = await Tags.findAll();
+  const tags = await Tags.findAll({
+    order: [
+      ["tag_name", "ASC"]
+    ]
+  });
   res.send(tags);
+}
+
+exports.addNewTag = async (req, res) => {
+  const { name } = req.body;
+  try {
+    await Tags.create({ tag_name: name });
+  } catch (err) {
+    return res.status(400).send("Something went wrong!");
+  }
+  res.send("Tag has been added!");
+}
+
+exports.editTag = async (req, res) => {
+  const { tagId, name } = req.body;
+
+  try {
+    await Tags.update({ tag_name: name }, {
+      where: {
+        id: tagId,
+      },
+    });
+  } catch (err) {
+    return res.send("Something went wrong!");
+  }
+  res.send("OK");
+}
+
+exports.deleteTag = async (req, res) => {
+  const id = req.body.tagId;
+  await Tags.destroy({
+    where: {
+      id: id
+    },
+  });
+  res.send("Tag has been deleted!");
 }
 

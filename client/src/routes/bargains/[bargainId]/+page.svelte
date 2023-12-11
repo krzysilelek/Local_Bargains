@@ -93,7 +93,8 @@
   <div class="xl:mx-96 p-24 w-full h-full card">
     <div>
       <h2 class="h2">{bargain?.title}</h2>
-      <h3 class="h3">{bargain?.description}</h3>
+      <h4 class="h4 mt-3">{bargain?.tag.tag_name}</h4>
+      <h3 class="h3 mt-3">{bargain?.description}</h3>
       {#if bargain?.picture?.data.length !== 0}
         <img
           class="w-96"
@@ -101,7 +102,6 @@
           alt="bargain"
         />
       {/if}
-      <h4 class="h4">{bargain?.tag.tag_name}</h4>
     </div>
 
     <div

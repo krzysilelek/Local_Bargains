@@ -32,13 +32,13 @@
       {#each paginatedSource as row}
         <a href="bargains/{row.id}">
           <div class="mb-10 p-10 border-4 border-green-500">
-            <h2>
+            <h2 class="h2">
               {row.title}
             </h2>
-            <h2>
+            <h2 class="h2">
               {row.tag.tag_name}
             </h2>
-            <h3>
+            <h3 class="h3">
               {row.description}
             </h3>
           </div>
