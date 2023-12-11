@@ -1,6 +1,19 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { freeFormSearch } from '@simple-nominatim/core'
 
+export async function load({ params }) {
+  const response = await fetch("http://localhost:3000/api/tags", {
+    method: "get",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    }
+  });
+  const tags = await response.json();
+
+  return { tags };
+}
+
+
 export const actions = {
   default: async ({ request }) => {
     const formData = Object.fromEntries(await request.formData());
@@ -14,6 +27,14 @@ export const actions = {
       });
 
     }
-    throw redirect(303, `/bargains?client_lat=${result[0].lat}&client_lon=${result[0].lon}&radius=${formData.radius}`);
+
+    const tags = [];
+
+    for (const data in formData) {
+      if (data !== "localization" && data !== "radius") {
+        tags.push(data);
+      }
+    }
+    throw redirect(303, `/bargains?client_lat=${result[0].lat}&client_lon=${result[0].lon}&radius=${formData.radius}&tags=${tags}`);
   },
 }

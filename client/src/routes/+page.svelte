@@ -1,6 +1,7 @@
 <script>
   import { fly } from "svelte/transition";
   export let form;
+  export let data;
 </script>
 
 <svelte:head>
@@ -31,11 +32,24 @@
         />
         <button type="submit" class="variant-filled-primary">Submit</button>
       </div>
+      <div class="flex">
+        {#each data.tags as tag}
+          <label class="flex items-center mt-3 mr-3">
+            <input
+              class="checkbox"
+              type="checkbox"
+              name={tag.tag_name}
+              checked
+            />
+            <p>{tag.tag_name}</p>
+          </label>
+        {/each}
+      </div>
     </form>
     {#if form?.errors?.localization}
-      <span class="label w-full text-red-700"
-        >{form?.errors?.localization[0]}</span
-      >
+      <span class="label w-full text-red-700">
+        {form?.errors?.localization[0]}
+      </span>
     {/if}
   </div>
 </div>

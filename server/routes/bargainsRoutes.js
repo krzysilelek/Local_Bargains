@@ -12,7 +12,7 @@ router.get(
 );
 
 router.get(
-  "/api/bargains/getLocal/:client_lat/:client_lon/:radius",
+  "/api/bargains/getLocal/:client_lat/:client_lon/:radius/:tags",
   errorHandler.catchAsync(DatabaseController.getLocalBargains)
 );
 
