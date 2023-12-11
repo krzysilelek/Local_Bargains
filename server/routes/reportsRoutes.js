@@ -12,4 +12,25 @@ router.post(
   errorHandler.catchAsync(DatabaseController.addNewReport)
 );
 
+router.delete(
+  "/api/reports/delete",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.checkIfAdmin),
+  errorHandler.catchAsync(DatabaseController.deleleReport)
+);
+
+router.get(
+  "/api/reports/ofBargain/:bargainId",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.checkIfAdmin),
+  errorHandler.catchAsync(DatabaseController.getReportsOfBargain)
+);
+
+router.get(
+  "/api/reports/get",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.checkIfAdmin),
+  errorHandler.catchAsync(DatabaseController.getReportsNumber)
+);
+
 module.exports = router;

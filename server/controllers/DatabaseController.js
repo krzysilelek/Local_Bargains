@@ -137,6 +137,22 @@ exports.getBargain = async (req, res) => {
   res.send(bargain);
 }
 
+exports.getInfoOfBargainsCreator = async (req, res) => {
+  const { id } = req.params;
+  const User = Bargains.belongsTo(Users, { foreignKey: "user_id" });
+  const creator = await Bargains.findOne({
+    where: {
+      id: id
+    },
+    attributes: ["id"],
+    include: [{
+      association: User,
+      attributes: ["id", "username"]
+    }]
+  });
+  res.send(creator);
+}
+
 exports.addNewBargain = async (req, res) => {
   const { id } = req.user
   const { title, description, base64Photo: picture = "", tag, latitude, longitude } = req.body;
@@ -298,13 +314,50 @@ exports.addNewComment = async (req, res) => {
 
 exports.addNewReport = async (req, res) => {
   const { bargain_id, report: description } = req.body;
-  const { user_id } = req.user;
+  const { id } = req.user;
   try {
-    await Reports.create({ bargain_id: bargain_id, user_id: user_id, description: description });
+    await Reports.create({ bargain_id: bargain_id, user_id: id, description: description });
   } catch (err) {
     return res.status(400).send("Something went wrong!");
   }
   res.send("Report has been added!");
+}
+
+exports.getReportsOfBargain = async (req, res) => {
+  const User = Reports.belongsTo(Users, { foreignKey: "user_id" });
+  const { bargainId } = req.params;
+  const reports = await Reports.findAll({
+    where: {
+      bargain_id: bargainId
+    },
+    include: [{
+      association: User,
+      attributes: ["username"],
+    }]
+  });
+  res.send(reports);
+}
+
+exports.getReportsNumber = async (req, res) => {
+  const reports = await Reports.findAll({
+    attributes: [
+      'bargain_id',
+      [sequelize.fn('COUNT', sequelize.col('bargain_id')), 'report_count']
+    ],
+    group: 'bargain_id',
+    raw: true
+  });
+  res.send(reports);
+}
+
+exports.deleleReport = async (req, res) => {
+  const id = req.body.reportId;
+  await Reports.destroy({
+    where: {
+      id: id
+    },
+  });
+  res.send("Report has been deleted!");
 }
 
 exports.getTags = async (req, res) => {

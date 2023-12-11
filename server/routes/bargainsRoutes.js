@@ -50,4 +50,10 @@ router.delete(
   errorHandler.catchAsync(DatabaseController.deleteBargain)
 );
 
+router.get(
+  "/api/bargain/:id/getCreatorInfo",
+  errorHandler.catchAsync(AuthorizationController.authenticate),
+  errorHandler.catchAsync(DatabaseController.getInfoOfBargainsCreator)
+);
+
 module.exports = router;
