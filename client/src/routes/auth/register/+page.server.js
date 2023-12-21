@@ -1,3 +1,4 @@
+import { BACKEND_ADDRESS } from '$env/static/private';
 import { fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod'
 
@@ -47,7 +48,7 @@ export const actions = {
     for (const [key, value] of Object.entries(formData)) {
       reqBody.append(key, value);
     }
-    const response = await fetch("http://localhost:3000/api/auth/register", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/auth/register`, {
       method: "post",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

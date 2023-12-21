@@ -1,7 +1,8 @@
+import { BACKEND_ADDRESS } from '$env/static/private';
 import { redirect } from "@sveltejs/kit";
 
 export async function load({ fetch, params }) {
-  let response = await fetch(`http://localhost:3000/api/bargain/${params.reportsOfBargain}/getCreatorInfo`, {
+  let response = await fetch(`http://${BACKEND_ADDRESS}/api/bargain/${params.reportsOfBargain}/getCreatorInfo`, {
     method: "get",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -10,7 +11,7 @@ export async function load({ fetch, params }) {
   const info = await response.json();
 
 
-  response = await fetch(`http://localhost:3000/api/reports/ofBargain/${params.reportsOfBargain}`, {
+  response = await fetch(`http://${BACKEND_ADDRESS}/api/reports/ofBargain/${params.reportsOfBargain}`, {
     method: "get",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -22,13 +23,13 @@ export async function load({ fetch, params }) {
 }
 
 export const actions = {
-  deleteBargain: async ({ request, cookies, url }) => {
+  deleteBargain: async ({ request, cookies }) => {
     const formData = Object.fromEntries(await request.formData());
     const reqBody = new URLSearchParams();
     for (const [key, value] of Object.entries(formData)) {
       reqBody.append(key, value);
     }
-    const response = await fetch("http://localhost:3000/api/bargains/delete", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/bargains/delete`, {
       method: "delete",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -44,7 +45,7 @@ export const actions = {
     for (const [key, value] of Object.entries(formData)) {
       reqBody.append(key, value);
     }
-    const response = await fetch("http://localhost:3000/api/reports/delete", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/reports/delete`, {
       method: "delete",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

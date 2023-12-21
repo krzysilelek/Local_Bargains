@@ -1,3 +1,4 @@
+import { BACKEND_ADDRESS } from '$env/static/private';
 import * as set_cookie_parser from 'set-cookie-parser';
 
 export async function handle({ event, resolve }) {
@@ -9,7 +10,7 @@ export async function handle({ event, resolve }) {
   if (refreshToken === null) {
     return await resolve(event);
   }
-  const response = await fetch("http://localhost:3000/api/auth/refresh", {
+  const response = await fetch(`http://${BACKEND_ADDRESS}/api/auth/refresh`, {
     method: "post",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",

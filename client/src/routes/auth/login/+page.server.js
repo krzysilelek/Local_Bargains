@@ -1,3 +1,4 @@
+import { BACKEND_ADDRESS } from '$env/static/private';
 import { fail, redirect } from '@sveltejs/kit';
 import * as set_cookie_parser from 'set-cookie-parser';
 import { z } from 'zod';
@@ -40,7 +41,7 @@ export const actions = {
       reqBody.append(key, value);
     }
 
-    const response = await fetch("http://localhost:3000/api/auth/login", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/auth/login`, {
       method: "post",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

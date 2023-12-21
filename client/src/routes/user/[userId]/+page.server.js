@@ -1,3 +1,4 @@
+import { BACKEND_ADDRESS } from '$env/static/private';
 import { redirect } from "@sveltejs/kit";
 import { z } from 'zod';
 import { freeFormSearch } from '@simple-nominatim/core'
@@ -48,7 +49,7 @@ export async function load({ fetch, cookies, url }) {
     throw redirect(307, `/auth/login?redirectTo=${url.pathname}`);
   }
 
-  let response = await fetch("http://localhost:3000/api/bargainsOfUser", {
+  let response = await fetch(`http://${BACKEND_ADDRESS}/api/bargainsOfUser`, {
     method: "get",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -56,7 +57,7 @@ export async function load({ fetch, cookies, url }) {
   });
   const bargains = await response.json();
 
-  response = await fetch("http://localhost:3000/api/tags", {
+  response = await fetch(`http://${BACKEND_ADDRESS}/api/tags`, {
     method: "get",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -101,7 +102,7 @@ export const actions = {
     reqBody.delete("picture");
     reqBody.delete("addFormValue");
     reqBody.delete("localization");
-    const response = await fetch("http://localhost:3000/api/bargains/add", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/bargains/add`, {
       method: "post",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -148,7 +149,7 @@ export const actions = {
     reqBody.delete("picture");
     reqBody.delete("addFormValue");
     reqBody.delete("localization");
-    const response = await fetch("http://localhost:3000/api/bargains/edit", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/bargains/edit`, {
       method: "put",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -165,7 +166,7 @@ export const actions = {
     for (const [key, value] of Object.entries(formData)) {
       reqBody.append(key, value);
     }
-    const response = await fetch("http://localhost:3000/api/bargains/delete", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/bargains/delete`, {
       method: "delete",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

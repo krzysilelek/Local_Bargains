@@ -1,8 +1,9 @@
+import { BACKEND_ADDRESS } from '$env/static/private';
 import { fail, redirect } from '@sveltejs/kit';
 import { freeFormSearch } from '@simple-nominatim/core'
 
-export async function load({ params }) {
-  const response = await fetch("http://localhost:3000/api/tags", {
+export async function load() {
+  const response = await fetch(`http://${BACKEND_ADDRESS}/api/tags`, {
     method: "get",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",

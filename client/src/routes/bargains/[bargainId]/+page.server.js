@@ -1,3 +1,4 @@
+import { BACKEND_ADDRESS } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 
@@ -21,7 +22,7 @@ const ReportScheme = z.object({
 });
 
 export async function load({ params }) {
-  let response = await fetch(`http://localhost:3000/api/bargain/${params.bargainId}`, {
+  let response = await fetch(`http://${BACKEND_ADDRESS}/api/bargain/${params.bargainId}`, {
     method: "get",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -29,7 +30,7 @@ export async function load({ params }) {
   });
   const bargain = await response.json();
 
-  response = await fetch(`http://localhost:3000/api/comments/${params.bargainId}`, {
+  response = await fetch(`http://${BACKEND_ADDRESS}/api/comments/${params.bargainId}`, {
     method: "get",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -57,7 +58,7 @@ export const actions = {
       reqBody.append(key, value);
     }
 
-    const response = await fetch("http://localhost:3000/api/comments/add", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/comments/add`, {
       method: "post",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -83,7 +84,7 @@ export const actions = {
       reqBody.append(key, value);
     }
 
-    const response = await fetch("http://localhost:3000/api/reports/add", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/reports/add`, {
       method: "post",
       mode: "no-cors",
       headers: {

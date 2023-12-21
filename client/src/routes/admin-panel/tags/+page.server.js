@@ -1,3 +1,4 @@
+import { BACKEND_ADDRESS } from '$env/static/private';
 import { redirect } from "@sveltejs/kit";
 import { z } from 'zod';
 
@@ -10,7 +11,7 @@ const TagScheme = z.object({
 });
 
 export async function load({ fetch }) {
-  const response = await fetch("http://localhost:3000/api/tags", {
+  const response = await fetch(`http://${BACKEND_ADDRESS}/api/tags`, {
     method: "get",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -40,7 +41,7 @@ export const actions = {
       reqBody.append(key, value);
     }
 
-    const response = await fetch("http://localhost:3000/api/tags/add", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/tags/add`, {
       method: "post",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -69,7 +70,7 @@ export const actions = {
       reqBody.append(key, value);
     }
 
-    const response = await fetch("http://localhost:3000/api/tags/edit", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/tags/edit`, {
       method: "put",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -86,7 +87,7 @@ export const actions = {
     for (const [key, value] of Object.entries(formData)) {
       reqBody.append(key, value);
     }
-    const response = await fetch("http://localhost:3000/api/tags/delete", {
+    const response = await fetch(`http://${BACKEND_ADDRESS}/api/tags/delete`, {
       method: "delete",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
