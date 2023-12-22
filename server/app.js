@@ -10,7 +10,7 @@ const errorHandler = require("./handlers/errors");
 const cors = require('cors');
 
 const app = express();
-app.use(cors({ origin: [`http://${process.env.FRONTEND_ADDRESS}/`], credentials: true }));
+app.use(cors());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 app.use(cookieParser());
