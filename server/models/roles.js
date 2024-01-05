@@ -9,7 +9,7 @@ module.exports = sequelize.define('roles', {
     primaryKey: true
   },
   role_name: {
-    type: Sequelize.STRING(20),
+    type: Sequelize.STRING(64),
     allowNull: false
   }
 });

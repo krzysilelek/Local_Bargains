@@ -20,7 +20,7 @@ module.exports = sequelize.define('bargains', {
     onUpdate: "CASCADE"
   },
   title: {
-    type: Sequelize.STRING(50),
+    type: Sequelize.STRING(64),
     allowNull: false
   },
   description: {

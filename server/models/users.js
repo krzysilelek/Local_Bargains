@@ -9,7 +9,7 @@ module.exports = sequelize.define('users', {
     primaryKey: true
   },
   username: {
-    type: Sequelize.STRING(20),
+    type: Sequelize.STRING(64),
     allowNull: false
   },
   password: {
@@ -17,7 +17,7 @@ module.exports = sequelize.define('users', {
     allowNull: false
   },
   email: {
-    type: Sequelize.STRING(50),
+    type: Sequelize.STRING(64),
     allowNull: false,
     unique: true
   },
