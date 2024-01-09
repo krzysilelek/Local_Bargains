@@ -4,7 +4,6 @@ const sequelize = require('../database/sequelize.js');
 module.exports = sequelize.define('user_roles', {
   user_id: {
     type: Sequelize.UUID,
-    primaryKey: true,
     references: {
       model: 'users',
       key: 'user_id',

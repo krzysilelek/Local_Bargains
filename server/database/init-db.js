@@ -38,7 +38,7 @@ async function findTagUUID(tagName) {
 async function build() {
   await sequelize.sync({ force: true });
   await Users.create({ username: 'walidator03', password: '$2b$10$KIODl6YVXpq4QDWxou7rBusYT9/bwJu6F8N2CajsuAFVxaIgKnjTS', email: 'walidator03@gmail.com' });
-  await Users.create({ username: 'userek', password: '$2y$10$zU1AFbOgYC7s9daDIbcZN.AwiwhkZ388ZHmqz2vgj1IDN6fSdQh8K', email: 'user@user.com' });
+  await Users.create({ username: 'userek', password: '$2a$10$e38QtU/lHzx92CV/OK6oCu9n6sWOFkKRRNtNzmVLt7orf5gNQYN02', email: 'user@user.com' });
   await Roles.create({ role_name: 'Administrator' });
   await Roles.create({ role_name: 'User' });
   await UserRole.create({ user_id: await findUserUUID('walidator03'), role_id: await findRoleUUID('Administrator') });
