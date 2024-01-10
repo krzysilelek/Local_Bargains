@@ -1,4 +1,5 @@
-#Web application to display local bargains.
+Web application to display local bargains.
+===============
 
 The aim of the work is to design and implement a web application to display bargains from various shops based on the user’s location. The application includes three panels. A logged-in user panel, a non-logged-in user panel and an administrator panel.
 
